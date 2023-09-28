@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Bash script that displays script lists content in this directory,
+# without the initial # in filenames
+
+files="$(ls)"
+for f in $files;
+do
+	echo "$f" | cut -d "-" -f2
+done
