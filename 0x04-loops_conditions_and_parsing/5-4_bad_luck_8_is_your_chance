@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Bash script that loops from 1 to 10, bad luck 4th, good luck 8th.
 
-k=0
+k=1
 while [ "$k" -le 10 ]
 do
 	if [ "$k" -eq 4 ]
