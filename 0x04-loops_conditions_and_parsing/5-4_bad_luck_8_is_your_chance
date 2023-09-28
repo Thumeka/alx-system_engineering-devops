@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Bash script that loops from 1 to 10, bad luck 4th, good luck 8th.
+
+k=0
+while [ "$k" -le 10 ]
+do
+	if [ "$k" -eq 4 ]
+then
+	echo "bad luck"i;
+	elif [ "$k" -eq 8 ]
+then
+	echo "good luck";
+	else
+		echo "Best School";
+	fi
+	(( k++ ))
+done
