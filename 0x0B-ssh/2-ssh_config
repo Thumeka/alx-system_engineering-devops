@@ -2,5 +2,7 @@
 # SSH client configuration to refuse to authenticate using a password
 
 Host 54.175.201.76
-     PasswordAuthentication no
-     IdentityFile ~/.ssh/school
+	HostName 54.175.201.76
+	User ubuntu
+	PasswordAuthentication no
+	IdentityFile ~/.ssh/school
