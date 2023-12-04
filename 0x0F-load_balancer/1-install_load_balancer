@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Install HAproxy
+# config traffic to web-01 and web-02
+apt-get -y update
+
+apt-get -y install software-properties-common
+add-apt-repository -y ppa:vbernat/haproxy-1.8
+
+haproxy_version="1.8*"
+apt-get -y install haproxy=${haproxy_version}
+
+touch /etc/haproxy/haproxy.cfg
+
+echo "
+frontend frontend
+        bind *:80
+        mode http
+        default_backend backend
+backend backend
+        mode http
+        balance roundrobin
+        server 2482-web-01 34.207.253.218:80 check
+        server 2482-web-02 35.153.192.237:80 check" >> /etc/haproxy/haproxy.cfg
+
+sudo service haproxy start
