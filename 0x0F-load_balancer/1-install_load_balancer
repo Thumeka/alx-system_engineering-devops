@@ -1,25 +1,15 @@
 #!/usr/bin/env bash
-# Install HAproxy
-# config traffic to web-01 and web-02
-apt-get -y update
+# Installs HAproxy and configures it with roundrobin, manageable via init scripts, and configured with the right host names
 
-apt-get -y install software-properties-common
-add-apt-repository -y ppa:vbernat/haproxy-1.8
+# Install HAproxy 1.6
+sudo apt-get update
+sudo apt-get install -y haproxy=1.6\*
 
-haproxy_version="1.8*"
-apt-get -y install haproxy=${haproxy_version}
+# Manage Haproxy via init script
+sudo sed -i "s/ENABLED=0/ENABLED=1/" /etc/default/haproxy
 
-touch /etc/haproxy/haproxy.cfg
-
-echo "
-frontend frontend
-        bind *:80
-        mode http
-        default_backend backend
-backend backend
-        mode http
-        balance roundrobin
-        server 2482-web-01 34.207.253.218:80 check
-        server 2482-web-02 35.153.192.237:80 check" >> /etc/haproxy/haproxy.cfg
-
-sudo service haproxy start
+# Round Robin for two servers
+config="frontend web-frontend\n\tbind *:80\n\tmode http\n\tdefault_backend web-backend\n\nbackend web-backend\n\tbalance roundrobin\n\tmode http\n\toption forwardfor\n\tserver 2483-web-01 34.207.253.218:80 check\n\tserver 2483-web-02 35.153.192.237:80 check\n"
+echo -e "$config" | sudo tee -a /etc/haproxy/haproxy.cfg
+sudo service haproxy reload
+sudo service haproxy restart
