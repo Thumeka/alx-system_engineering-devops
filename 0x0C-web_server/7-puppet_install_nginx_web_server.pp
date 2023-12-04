@@ -12,7 +12,7 @@ file_line { 'Add redirection, 301':
 }
 
 file { '/var/www/html/index.html':
-  content => 'Hello World',
+  content => 'Hello World!',
 }
 
 service { 'nginx':
