@@ -10,7 +10,7 @@ apt-get install haproxy=2.6.\*
 sudo sed -i "s/ENABLED=0/ENABLED=1/" /etc/default/haproxy
 
 # Round Robin for two servers
-config="frontend web-frontend\n\tbind *:80\n\tmode http\n\tdefault_backend web-backend\n\nbackend web-backend\n\tbalance roundrobin\n\tmode http\n\toption forwardfor\n\tserver 2483-web-01 34.207.253.218:80 check\n\tserver 2483-web-02 35.153.192.237:80 check\n"
+config="frontend web-frontend\n\tbind *:80\n\tmode http\n\tdefault_backend web-backend\n\nbackend web-backend\n\tbalance roundrobin\n\tmode http\n\toption forwardfor\n\tserver 2483-web-01 54.221.179.90:80 check\n\tserver 2483-web-02 35.153.192.237:80 check\n"
 echo -e "$config" | sudo tee -a /etc/haproxy/haproxy.cfg
 
 sudo service haproxy restart
