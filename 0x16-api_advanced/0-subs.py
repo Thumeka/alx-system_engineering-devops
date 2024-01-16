@@ -6,14 +6,21 @@ import requests
 
 
 def number_of_subscribers(subreddit):
-    """Gets the number of subscibers"""
-    # set custom headers for <Response [429]>
+    """Gets the number of subscribers for a subreddit."""
+    # Set custom headers for the request
     headers = {'User-Agent': 'My User Agent 1.0'}
-    r = requests.get('https://www.reddit.com/r/{}/about.json'.
-                     format(subreddit), headers=headers)
-    # if given wrong subreddit
-    if r.status_code == 404:
+    # Make the HTTP request to get subreddit information
+    url = f'https://www.reddit.com/r/{subreddit}/about.json'
+    response = requests.get(url, headers=headers)
+    # Check if the subreddit exists (status code 404)
+    if response.status_code == 404:
         return 0
-    result = r.json().get('data')
-    # print (r)
-    return result.get('subscribers')
+    try:
+        # Parse JSON response
+        result = response.json().get('data')
+        # Return the number of subscribers
+        return result.get('subscribers')
+    except (ValueError, AttributeError):
+        # Handle JSON parsing errors
+        print("Error parsing JSON response.")
+        return 0
