@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Bash script to display information about DNS records for specified subdomains
+
+print_rec() {
+    local domain="$1"
+    local subdomain="$2"
+
+    printf "The subdomain %s is a " "$subdomain"
+    dig_output=$(dig "$subdomain.$domain" +short)
+
+    if [ -n "$dig_output" ]; then
+        record_type=$(dig "$subdomain.$domain" | awk '/ANSWER SECTION/ { getline; print $4 }')
+        record_value=$(dig "$subdomain.$domain" | awk '/ANSWER SECTION/ { getline; print $5 }')
+
+        printf "%s record and points to %s\n" "$record_type" "$record_value"
+    else
+        echo "No record found for $subdomain"
+    fi
+}
+
+if [ -z "$2" ]; then
+    subdomains=("www" "lb-01" "web-01" "web-02")
+    for subs in "${subdomains[@]}"; do
+        print_rec "$1" "$subs"
+    done
+else
+    print_rec "$1" "$2"
+fi
