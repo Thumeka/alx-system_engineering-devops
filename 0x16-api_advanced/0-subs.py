@@ -6,21 +6,25 @@ from requests import get
 
 
 def number_of_subscribers(subreddit):
-    """Gets the number of subscribers for a subreddit."""
-    # Set custom headers for the request
-    headers = {'User-Agent': 'My User Agent 1.0'}
-    # Make the HTTP request to get subreddit information
-    url = f'https://www.reddit.com/r/{subreddit}/about.json'
-    response = requests.get(url, headers=headers)
-    # Check if the subreddit exists (status code 404)
-    if response.status_code == 404:
+    """Queries Reddit API and returns the 
+    number of subscribers for subreddit"""
+
+    if subreddit is None or not isinstance(subreddit, str):
         return 0
+
+    api_url = f"https://www.reddit.com/r/{subreddit}/about.json"
+    user_agent = {'User-agent': 'Google Chrome Version 120.0.6099.217'}
+
     try:
-        # Parse JSON response
-        result = response.json().get('data')
-        # Return the number of subscribers
-        return result.get('subscribers')
-    except (ValueError, AttributeError):
-        # Handle JSON parsing errors
-        print("Error parsing JSON response.")
+        response = get(api_url, headers=user_agent, allow_redirects=False)
+
+        if response.status_code == 200:
+            results = response.json()
+            subscribers = results['data']['subscribers']
+            return subscribers
+        else:
+            print(f"Error: {response.status_code}")
+            return 0
+    except Exception as e:
+        print(f"Exception: {e}")
         return 0
