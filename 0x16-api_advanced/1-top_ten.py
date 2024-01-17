@@ -8,7 +8,7 @@ import requests
 
 def top_ten(subreddit):
     """Gets the titles of the top 10 posts"""
-    headers = ({'User-Agent': 'My User Agent 1.0'})
+    headers = ({'User-Agent': 'Google Chrome Version 120.0.6099.217'})
     r = requests.get('https://www.reddit.com/r/{}/hot/.json'.
                      format(subreddit), headers=headers)
     if r.status_code == 404:
